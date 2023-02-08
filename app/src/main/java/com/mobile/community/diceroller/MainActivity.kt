@@ -1,15 +1,15 @@
 package com.mobile.community.diceroller
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-//    TODO: 2. Simpan data ketika di rotate
-    var diceRollResult = 1
+    private var diceRollResult = 1
     private lateinit var buttonRoll: Button
     private lateinit var imgDice: ImageView
     private lateinit var textDice: TextView
@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         buttonRoll = findViewById(R.id.btn_roll)
         imgDice = findViewById(R.id.img_dice)
         textDice = findViewById(R.id.tv_dice)
+        diceRollResult = savedInstanceState?.getInt("key_dice_value") ?: diceRollResult
         updateDice()
         buttonRoll.setOnClickListener {
             var res = (1..6).random()
@@ -29,6 +30,27 @@ class MainActivity : AppCompatActivity() {
             diceRollResult = res
             updateDice()
         }
+        Log.i("Lifecycle", "OnCreated called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("Lifecycle", "OnResume called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i("Lifecycle", "OnPause called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("Lifecycle", "OnDestroy called")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("key_dice_value", diceRollResult)
     }
 
     private fun updateDice() {
